@@ -8,7 +8,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 container:
-      image: mcr.microsoft.com/mlops/python:latest
+      image: acralgattik86.azurecr.io/mlops/python:latest
       endpoint: XXX
 
 
