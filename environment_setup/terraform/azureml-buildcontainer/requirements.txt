@@ -1,0 +1,17 @@
+# Modules needed both in the scoring container and the CI environment belong in model-requirements.txt
+
+-r model-requirements.txt
+
+# Modules needed in the CI environment but not in the scoring container
+
+pytest>=5.3
+requests>=2.22
+python-dotenv>=0.10.3
+flake8>=3.7
+flake8_formatter_junit_xml
+azure-cli==2.0.76
+
+# Mdoules for Databricks tests. Versions match Databricks runtime 6.2
+pyspark==2.4.4
+pyarrow==0.13.0
+databrickstest==0.0.1

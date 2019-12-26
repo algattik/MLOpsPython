@@ -1,36 +1,17 @@
+pr: none
 trigger:
   branches:
     include:
     - master
   paths:
     include:
-    - environment_setup/arm-templates/*
-pr:
-  branches:
-    include:
-    - master
-  paths:
-    include:
-    - environment_setup/arm-templates/*
-
-pool:
-  vmImage: 'ubuntu-latest'
+    - infrastructure/
 
 variables:
-- group: devopsforai-aml-vg
+- group: terraform
 
-
-steps:
-- task: AzureResourceGroupDeployment@2
-  inputs:
-    azureSubscription: 'AzureResourceConnection'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: '$(RESOURCE_GROUP)'
-    location: $(LOCATION)
-    templateLocation: 'Linked artifact'
-    csmFile: '$(Build.SourcesDirectory)/environment_setup/arm-templates/cloud-environment.json'
-    overrideParameters: '-baseName $(BASE_NAME) -location $(LOCATION) -workspace $(WORKSPACE_NAME)'
-    deploymentMode: 'Incremental'
-  displayName: 'Deploy MLOps resources to Azure'
-
-  
+stages:
+- template: terraform-stages-template.yml
+  parameters:
+    environment: stage
+    displayName: Staging

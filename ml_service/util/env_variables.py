@@ -18,9 +18,6 @@ class Env(Singleton):
         self._workspace_name = os.environ.get("WORKSPACE_NAME")
         self._resource_group = os.environ.get("RESOURCE_GROUP")
         self._subscription_id = os.environ.get("SUBSCRIPTION_ID")
-        self._tenant_id = os.environ.get("TENANT_ID")
-        self._app_id = os.environ.get("SP_APP_ID")
-        self._app_secret = os.environ.get("SP_APP_SECRET")
         self._vm_size = os.environ.get("AML_COMPUTE_CLUSTER_CPU_SKU")
         self._compute_name = os.environ.get("AML_COMPUTE_CLUSTER_NAME")
         self._vm_priority = os.environ.get("AML_CLUSTER_PRIORITY", 'lowpriority')  # noqa E501
@@ -39,6 +36,16 @@ class Env(Singleton):
         self._model_path = os.environ.get('MODEL_PATH')
         self._db_cluster_id = os.environ.get("DB_CLUSTER_ID")
         self._score_script = os.environ.get("SCORE_SCRIPT")
+        self._training_datastore_name = os.environ.get("TRAINING_DATASTORE_NAME", "trainingdatads")
+        self._training_account_name = os.environ.get("TRAINING_ACCOUNT_NAME")
+        self._training_container_name = os.environ.get("TRAINING_CONTAINER_NAME", "trainingdata")
+        self._databricks_compute_name = os.environ.get("DATABRICKS_COMPUTE_NAME", "databricks")
+        self._databricks_workspace_name = os.environ.get("DATABRICKS_WORKSPACE_NAME")
+        self._databricks_access_token = os.environ.get("DATABRICKS_ACCESS_TOKEN")
+        self._databricks_runtime_version = os.environ.get("DATABRICKS_RUNTIME_VERSION", "6.2.x-scala2.11")
+        self._databricks_vm_size = os.environ.get("DATABRICKS_VM_SIZE", "Standard_D3_v2")
+        self._databricks_nodes = int(os.environ.get("DATABRICKS_NODES", 1))
+
 
     @property
     def workspace_name(self):
@@ -51,18 +58,6 @@ class Env(Singleton):
     @property
     def subscription_id(self):
         return self._subscription_id
-
-    @property
-    def tenant_id(self):
-        return self._tenant_id
-
-    @property
-    def app_id(self):
-        return self._app_id
-
-    @property
-    def app_secret(self):
-        return self._app_secret
 
     @property
     def vm_size(self):
@@ -135,3 +130,39 @@ class Env(Singleton):
     @property
     def score_script(self):
         return self._score_script
+
+    @property
+    def training_datastore_name(self):
+        return self._training_datastore_name
+
+    @property
+    def training_account_name(self):
+        return self._training_account_name
+
+    @property
+    def training_container_name(self):
+        return self._training_container_name
+
+    @property
+    def databricks_compute_name(self):
+        return self._databricks_compute_name
+
+    @property
+    def databricks_workspace_name(self):
+        return self._databricks_workspace_name
+
+    @property
+    def databricks_access_token(self):
+        return self._databricks_access_token
+
+    @property
+    def databricks_runtime_version(self):
+        return self._databricks_runtime_version
+
+    @property
+    def databricks_vm_size(self):
+        return self._databricks_vm_size
+
+    @property
+    def databricks_nodes(self):
+        return self._databricks_nodes

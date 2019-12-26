@@ -40,10 +40,7 @@ if (run.id.startswith('OfflineRun')):
     experiment_name = os.environ.get("EXPERIMENT_NAME")
     resource_group = os.environ.get("RESOURCE_GROUP")
     subscription_id = os.environ.get("SUBSCRIPTION_ID")
-    tenant_id = os.environ.get("TENANT_ID")
     model_name = os.environ.get("MODEL_NAME")
-    app_id = os.environ.get('SP_APP_ID')
-    app_secret = os.environ.get('SP_APP_SECRET')
     build_id = os.environ.get('BUILD_BUILDID')
     # run_id useful to query previous runs
     run_id = "57fee47f-5ae8-441c-bc0c-d4c371f32d70"

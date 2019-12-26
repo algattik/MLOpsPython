@@ -1,0 +1,6 @@
+# Modules needed both in the scoring container and the CI environment
+azureml-sdk==1.0.81
+scipy==1.3.1
+scikit-learn==0.22
+pandas==0.25.3
+numpy==1.17.3

@@ -50,7 +50,7 @@ The variable group should contain the following required variables:
 
 | Variable Name               | Suggested Value                    |
 | --------------------------- | -----------------------------------|
-| BASE_NAME                   | [unique base name]                 |
+| BASE_NAME                   | [unique base name]                 | FIXME
 | LOCATION                    | centralus                          |
 | RESOURCE_GROUP              |                                    |
 | WORKSPACE_NAME              | mlops-AML-WS                       |
