@@ -36,16 +36,22 @@ class Env(Singleton):
         self._model_path = os.environ.get('MODEL_PATH')
         self._db_cluster_id = os.environ.get("DB_CLUSTER_ID")
         self._score_script = os.environ.get("SCORE_SCRIPT")
-        self._training_datastore_name = os.environ.get("TRAINING_DATASTORE_NAME", "trainingdatads")
+        self._training_datastore_name = os.environ.get(
+            "TRAINING_DATASTORE_NAME", "trainingdatads")
         self._training_account_name = os.environ.get("TRAINING_ACCOUNT_NAME")
-        self._training_container_name = os.environ.get("TRAINING_CONTAINER_NAME", "trainingdata")
-        self._databricks_compute_name = os.environ.get("DATABRICKS_COMPUTE_NAME", "databricks")
-        self._databricks_workspace_name = os.environ.get("DATABRICKS_WORKSPACE_NAME")
-        self._databricks_access_token = os.environ.get("DATABRICKS_ACCESS_TOKEN")
-        self._databricks_runtime_version = os.environ.get("DATABRICKS_RUNTIME_VERSION", "6.2.x-scala2.11")
-        self._databricks_vm_size = os.environ.get("DATABRICKS_VM_SIZE", "Standard_D3_v2")
+        self._training_container_name = os.environ.get(
+            "TRAINING_CONTAINER_NAME", "trainingdata")
+        self._databricks_compute_name = os.environ.get(
+            "DATABRICKS_COMPUTE_NAME", "databricks")
+        self._databricks_workspace_name = os.environ.get(
+            "DATABRICKS_WORKSPACE_NAME")
+        self._databricks_access_token = os.environ.get(
+            "DATABRICKS_ACCESS_TOKEN")
+        self._databricks_runtime_version = os.environ.get(
+            "DATABRICKS_RUNTIME_VERSION", "6.2.x-scala2.11")
+        self._databricks_vm_size = os.environ.get(
+            "DATABRICKS_VM_SIZE", "Standard_D3_v2")
         self._databricks_nodes = int(os.environ.get("DATABRICKS_NODES", 1))
-
 
     @property
     def workspace_name(self):
