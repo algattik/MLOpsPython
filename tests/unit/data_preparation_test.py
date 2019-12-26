@@ -1,18 +1,9 @@
-import sys
-import os
-import numpy as np
-from azureml.core.run import Run
-from unittest.mock import Mock
-sys.path.append(os.path.abspath("./code/training"))  # NOQA: E402
-from train import train_model
-
-
 import pandas as pd
 import databrickstest
 import glob
 from tempfile import TemporaryDirectory
-
 from pandas.testing import assert_frame_equal
+
 
 def test_etl():
     with databrickstest.session() as dbrickstest:
@@ -34,7 +25,6 @@ def test_etl():
             csv_files = glob.glob(f"{out_dir}/*.csv")
             assert len(csv_files) == 1
             resultDF = pd.read_csv(csv_files[0])
-
 
         # Compare produced Parquet file and expected CSV file
         expectedDF = pd.read_csv("tests/unit/data_preparation_expected.csv")
