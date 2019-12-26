@@ -7,7 +7,7 @@ pr:
 pool: 
   vmImage: 'ubuntu-latest'
 
-container: mcr.microsoft.com/mlops/python:latest  
+container: acrmlopssampledev.azurecr.io/modelbuild:latest
 
 
 variables:

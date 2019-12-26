@@ -13,8 +13,6 @@ trigger:
 variables:
 - template: azdo-variables.yml
 - group: devopsforai-aml-vg
-- name: BUILD_IMAGE
-  value: mcr.microsoft.com/mlops/python:latest
 
 
 stages:
@@ -25,7 +23,7 @@ stages:
     displayName: "Model CI Pipeline"
     pool:
       vmImage: 'ubuntu-latest'
-    container: $(BUILD_IMAGE)
+    container: acrmlopssampledev.azurecr.io/modelbuild:latest
     timeoutInMinutes: 0
     steps:
     - template: azdo-base-pipeline.yml
@@ -48,7 +46,7 @@ stages:
     displayName: "Get Pipeline ID for execution"
     pool:
       vmImage: 'ubuntu-latest'
-    container: mcr.microsoft.com/mlops/python:latest
+    container: acrmlopssampledev.azurecr.io/modelbuild:latest
     timeoutInMinutes: 0
     steps:
     - task: AzureCLI@1
@@ -93,7 +91,7 @@ stages:
     displayName: "Determine if evaluation succeeded and new model is registered"
     pool:
         vmImage: 'ubuntu-latest'
-    container: mcr.microsoft.com/mlops/python:latest
+    container: acrmlopssampledev.azurecr.io/modelbuild:latest
     timeoutInMinutes: 0
     steps:
     - template: azdo-template-get-model-version.yml
@@ -106,7 +104,7 @@ stages:
     displayName: "Deploy to ACI"
     pool:
       vmImage: 'ubuntu-latest'
-    container: mcr.microsoft.com/mlops/python:latest
+    container: acrmlopssampledev.azurecr.io/modelbuild:latest
     timeoutInMinutes: 0
     steps:
     - template: azdo-template-get-model-version.yml
@@ -141,7 +139,7 @@ stages:
     displayName: "Deploy to AKS"
     pool:
       vmImage: 'ubuntu-latest'
-    container: mcr.microsoft.com/mlops/python:latest
+    container: acrmlopssampledev.azurecr.io/modelbuild:latest
     timeoutInMinutes: 0
     steps:
     - template: azdo-template-get-model-version.yml
@@ -177,7 +175,7 @@ stages:
     displayName: "Deploy to Webapp"
     pool:
       vmImage: 'ubuntu-latest'
-    container: mcr.microsoft.com/mlops/python:latest
+    container: acrmlopssampledev.azurecr.io/modelbuild:latest
     timeoutInMinutes: 0
     steps:
     - template: azdo-template-get-model-version.yml
