@@ -75,11 +75,11 @@ in_dir = dbutils.widgets.get('training')
 
 # Read data file with healthcare provider information
 info = (
-spark.read.format("csv")
-        .options(header="true", mode="FAILFAST")
-        .load(f"{in_dir}/Inpatient_Rehabilitation_Facility_-_General_Information.csv.gz")
-        .withColumnRenamed("CMS Certification Number (CCN)", "CCN")
-        .cache())
+    spark.read.format("csv")
+    .options(header="true", mode="FAILFAST")
+    .load(f"{in_dir}/Inpatient_Rehabilitation_Facility_-_General_Information.csv.gz")
+    .withColumnRenamed("CMS Certification Number (CCN)", "CCN")
+    .cache())
 # Display data for one provider
 display(info.filter(info.CCN == "363038"))
 
@@ -87,11 +87,11 @@ display(info.filter(info.CCN == "363038"))
 
 # Read data file with number of patients by condition for healthcare providers
 conditions = (
-spark.read.format("csv")
-              .options(header="true", mode="FAILFAST")
-              .load(f"{in_dir}/Inpatient_Rehabilitation_Facility_-_Conditions.csv.gz")
-              .withColumnRenamed("CMS Certification Number (CCN)", "CCN")
-              .cache())
+    spark.read.format("csv")
+    .options(header="true", mode="FAILFAST")
+    .load(f"{in_dir}/Inpatient_Rehabilitation_Facility_-_Conditions.csv.gz")
+    .withColumnRenamed("CMS Certification Number (CCN)", "CCN")
+    .cache())
 # Display data for one provider
 display(conditions.filter(conditions.CCN == "363038"))
 
@@ -99,11 +99,11 @@ display(conditions.filter(conditions.CCN == "363038"))
 
 # Read data file with scores for healthcare providers
 provider = (
-spark.read.format("csv")
-            .options(header="true", mode="FAILFAST")
-            .load(f"{in_dir}/Inpatient_Rehabilitation_Facility_-_Provider_Data.csv.gz")
-            .withColumnRenamed("CMS Certification Number (CCN)", "CCN")
-            .cache())
+    spark.read.format("csv")
+    .options(header="true", mode="FAILFAST")
+    .load(f"{in_dir}/Inpatient_Rehabilitation_Facility_-_Provider_Data.csv.gz")
+    .withColumnRenamed("CMS Certification Number (CCN)", "CCN")
+    .cache())
 # Display data for one provider
 display(provider.filter(provider.CCN == "363038"))
 
