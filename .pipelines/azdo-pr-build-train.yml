@@ -7,7 +7,9 @@ pr:
 pool: 
   vmImage: 'ubuntu-latest'
 
-container: acrmlopssampledev.azurecr.io/modelbuild:latest
+container:
+  endpoint: mlops-acr
+  image: acrmlopssampledev.azurecr.io/modelbuild:latest
 
 
 variables:
