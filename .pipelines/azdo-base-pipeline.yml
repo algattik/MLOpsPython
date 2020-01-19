@@ -1,10 +1,10 @@
 jobs:
-- job: Environment
+- job: BuildEnvironment
   displayName: "Set up build environment"
   steps:
   - task: AzureCLI@1
     displayName: Generate build container
-    name: SetContainer
+    name: BuildContainer
     inputs:
       azureSubscription: AzureResourceConnection
       scriptLocation: inlineScript
@@ -24,11 +24,11 @@ jobs:
         fi
         echo "##vso[task.setvariable variable=BUILD_IMAGE;isOutput=true]$imageName:$imageTag"
 
-- job: "Model_CI_Pipeline"
-  displayName: "Model CI Pipeline"
-  dependsOn: Environment
+- job: "Model_CI"
+  displayName: "Model CI"
+  dependsOn: BuildEnvironment
   variables:
-    BUILD_IMAGE: $[ dependencies.Environment.outputs['SetContainer.BUILD_IMAGE'] ]
+    BUILD_IMAGE: $[ dependencies.BuildEnvironment.outputs['BuildContainer.BUILD_IMAGE'] ]
   container:
     image: $(BUILD_IMAGE)
     endpoint: ContainerRegistry
@@ -37,24 +37,25 @@ jobs:
 
   - script: |
      tox
-    displayName: 'Run tests'
+    displayName: 'Linting & unit tests'
 
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
       testResultsFiles: '*-testresults.xml'
-      testRunTitle: 'Linting & Unit tests'
       failTaskOnFailedTests: true
-    displayName: 'Publish linting and unit test results'
+    displayName: 'Publish test results'
 
   - task: UseDotNet@2
-    displayName: 'Use .NET Core sdk to generate HTML coverage report'
+    displayName: 'SDK for coverage report'
+    condition: succeededOrFailed()
     inputs:
       packageType: sdk
       version: 3.1.101
       installationPath: $(Agent.ToolsDirectory)/dotnet
 
   - task: PublishCodeCoverageResults@1
+    displayName: 'Publish coverage report'
     condition: succeededOrFailed()
     inputs:
       codeCoverageTool: Cobertura
