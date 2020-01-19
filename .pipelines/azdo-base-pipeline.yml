@@ -36,6 +36,8 @@ jobs:
   steps:
 
   - script: |
+     apt update
+     apt install -y icu-devtools
      tox
     displayName: 'Run tests'
 
