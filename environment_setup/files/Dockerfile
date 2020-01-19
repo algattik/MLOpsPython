@@ -6,6 +6,6 @@ RUN apt-get install -y gcc
 
 RUN conda install -c r r-essentials
 
-COPY environment_setup/requirements.txt  /setup/
+COPY requirements.txt  /setup/
 
 RUN pip install --upgrade -r /setup/requirements.txt
