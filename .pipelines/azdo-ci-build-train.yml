@@ -24,12 +24,7 @@ stages:
   - template: azdo-base-pipeline.yml
   - job: "Publish_Pipeline"
     displayName: "Publish AML Pipeline"
-    dependsOn: BuildEnvironment
-    variables:
-      BUILD_IMAGE: $[ dependencies.BuildEnvironment.outputs['SetContainer.BUILD_IMAGE'] ]
-    container:
-      image: $(BUILD_IMAGE)
-      endpoint: ContainerRegistry
+    container: mcr.microsoft.com/mlops/python:latest
     timeoutInMinutes: 0
     steps:
     - task: AzureCLI@1
@@ -92,9 +87,7 @@ stages:
   - job: "Training_Run_Report"
     dependsOn: "Run_ML_Pipeline"
     displayName: "Determine if evaluation succeeded and new model is registered"
-    container:
-      image: $(ACR).azurecr.io/mlops:latest
-      endpoint: ContainerRegistry
+    container: mcr.microsoft.com/mlops/python:latest
     timeoutInMinutes: 0
     steps:
     - template: azdo-template-get-model-version.yml
@@ -105,9 +98,7 @@ stages:
   jobs:
   - job: "Deploy_ACI"
     displayName: "Deploy to ACI"
-    container:
-      image: $(ACR).azurecr.io/mlops:latest
-      endpoint: ContainerRegistry
+    container: mcr.microsoft.com/mlops/python:latest
     timeoutInMinutes: 0
     steps:
     - template: azdo-template-get-model-version.yml
@@ -140,9 +131,7 @@ stages:
   jobs:
   - job: "Deploy_AKS"
     displayName: "Deploy to AKS"
-    container:
-      image: $(ACR).azurecr.io/mlops:latest
-      endpoint: ContainerRegistry
+    container: mcr.microsoft.com/mlops/python:latest
     timeoutInMinutes: 0
     steps:
     - template: azdo-template-get-model-version.yml
@@ -176,9 +165,7 @@ stages:
   jobs:
   - job: "Deploy_Webapp"
     displayName: "Deploy to Webapp"
-    container:
-      image: $(ACR).azurecr.io/mlops:latest
-      endpoint: ContainerRegistry
+    container: mcr.microsoft.com/mlops/python:latest
     timeoutInMinutes: 0
     steps:
     - template: azdo-template-get-model-version.yml
