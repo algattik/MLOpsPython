@@ -10,14 +10,15 @@ jobs:
       scriptLocation: inlineScript
       inlineScript: |
         set -euxo pipefail  # fail on error
-        imageTag=$(find docker -type f -exec md5sum {} \; | sort -k 2 | md5sum | cut -f1 -d ' ')
+        dockerDir=environment_setup/files
+        imageTag=$(find "$dockerDir" -type f -exec md5sum {} \; | sort -k 2 | md5sum | cut -f1 -d ' ')
         imageName="$(ACR).azurecr.io/modelbuild/$(BUILDCONTAINER_NAME)"
         if ! az acr repository show -n $(ACR) --image "modelbuild/$(BUILDCONTAINER_NAME):$imageTag" -o table; then
           az acr build \
             -r $(ACR) \
             -t "$imageName:$imageTag" \
             -t "$imageName:latest" \
-            docker
+            "$dockerDir"
         fi
         echo "##vso[task.setvariable variable=BUILD_IMAGE;isOutput=true]$imageName:$imageTag"
       workingDirectory: azureml
