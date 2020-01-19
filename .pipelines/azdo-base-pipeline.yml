@@ -51,6 +51,6 @@ jobs:
     condition: succeededOrFailed()
     inputs:
       codeCoverageTool: Cobertura
-      summaryFileLocation: '**/coverage.xml'
-      reportDirectory: '**/htmlcov'
+      summaryFileLocation: 'coverage.xml'
+      reportDirectory: 'htmlcov'
       failIfCoverageEmpty: true
