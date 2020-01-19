@@ -31,7 +31,7 @@ stages:
       BUILD_IMAGE: $[ dependencies.Environment.outputs['SetContainer.BUILD_IMAGE'] ]
     container:
       image: $(BUILD_IMAGE)
-      endpoint: aml-acr-connection
+      endpoint: ContainerRegistry
     timeoutInMinutes: 0
     steps:
     - task: AzureCLI@1
@@ -96,7 +96,7 @@ stages:
     displayName: "Determine if evaluation succeeded and new model is registered"
     container:
       image: $(ACR).azurecr.io/mlops:latest
-      endpoint: aml-acr-connection
+      endpoint: ContainerRegistry
     timeoutInMinutes: 0
     steps:
     - template: azdo-template-get-model-version.yml
@@ -109,7 +109,7 @@ stages:
     displayName: "Deploy to ACI"
     container:
       image: $(ACR).azurecr.io/mlops:latest
-      endpoint: aml-acr-connection
+      endpoint: ContainerRegistry
     timeoutInMinutes: 0
     steps:
     - template: azdo-template-get-model-version.yml
@@ -144,7 +144,7 @@ stages:
     displayName: "Deploy to AKS"
     container:
       image: $(ACR).azurecr.io/mlops:latest
-      endpoint: aml-acr-connection
+      endpoint: ContainerRegistry
     timeoutInMinutes: 0
     steps:
     - template: azdo-template-get-model-version.yml
@@ -180,7 +180,7 @@ stages:
     displayName: "Deploy to Webapp"
     container:
       image: $(ACR).azurecr.io/mlops:latest
-      endpoint: aml-acr-connection
+      endpoint: ContainerRegistry
     timeoutInMinutes: 0
     steps:
     - template: azdo-template-get-model-version.yml

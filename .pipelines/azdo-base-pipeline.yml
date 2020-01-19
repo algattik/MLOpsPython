@@ -30,7 +30,7 @@ jobs:
     BUILD_IMAGE: $[ dependencies.Environment.outputs['SetContainer.BUILD_IMAGE'] ]
   container:
     image: $(BUILD_IMAGE)
-    endpoint: aml-acr-connection
+    endpoint: ContainerRegistry
   timeoutInMinutes: 0
   steps:
 
