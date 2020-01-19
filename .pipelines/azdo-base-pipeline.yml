@@ -10,19 +10,28 @@ jobs:
       scriptLocation: inlineScript
       inlineScript: |
         set -euxo pipefail  # fail on error
+
+        # Get name and server of the container registry linked to the Azure ML workspace.
         acrId=$(az resource show -g "$RESOURCE_GROUP" -n "$WORKSPACE_NAME" --resource-type Microsoft.MachineLearningServices/workspaces --query properties.containerRegistry -o tsv)
         read -r acrName acrServer <<< $(az resource show --id "$acrId" --query '[[name,properties.loginServer]]' -o tsv)
+
         dockerDir=environment_setup/files
+        # Generate an tag with a reproducible checksum of all files in $dockerDir by doing a checksum of all files
+        # in alphabetical order, then another checksum of their names and checksums.
         imageTag=$(find "$dockerDir" -type f -exec md5sum {} \; | sort -k 2 | md5sum | cut -f1 -d ' ')
-        imageName="$acrServer/modelbuild/$(BUILDCONTAINER_NAME)"
-        if ! az acr repository show -n $acrName --image "modelbuild/$(BUILDCONTAINER_NAME):$imageTag" -o table; then
+
+        # If the image with the generated tag doesn't already exist, build it.
+        repo="modelbuild/$(BUILDCONTAINER_NAME)"
+        if ! az acr repository show -n $acrName --image "$repo:$imageTag" -o table; then
           az acr build \
             -r "$acrName" \
-            -t "$imageName:$imageTag" \
-            -t "$imageName:latest" \
+            -t "$repo:$imageTag" \
+            -t "$repo:latest" \
             "$dockerDir"
         fi
-        echo "##vso[task.setvariable variable=BUILD_IMAGE;isOutput=true]$imageName:$imageTag"
+
+        # Make image name available to subsequent jobs.
+        echo "##vso[task.setvariable variable=BUILD_IMAGE;isOutput=true]$acrServer/$repo:$imageTag"
 
 - job: "Model_CI"
   displayName: "Model CI"
