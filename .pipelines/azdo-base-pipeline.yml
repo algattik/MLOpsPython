@@ -51,7 +51,7 @@ jobs:
     displayName: 'Use .NET Core sdk to generate HTML coverage report'
     inputs:
       packageType: sdk
-      version: 2.2.203
+      version: 3.1.101
       installationPath: $(Agent.ToolsDirectory)/dotnet
 
   - task: PublishCodeCoverageResults@1
