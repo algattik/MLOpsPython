@@ -139,6 +139,18 @@ your Azure AD tenant, or receive the ID and secret of a service principal
 from your Azure AD Administrator. That principal must have Contributor
 permissions on the Azure ML Workspace.
 
+## Create a Docker Service Connection to manage your build container
+
+The pipeline requires a **Docker Registry**
+[service connection](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml#sep-docreg).
+As **Registry type**, choose **Azure Container Registry**.
+Point to the Azure Container Registry deployed by your IaC pipeline.
+
+Use **``ContainerRegistry``** as the connection name, since it is used
+in the Azure ML pipeline definition.
+
+![configure container registry service connection](images/create-acr-service-connection.png)
+
 ## Set up Build, Release Trigger, and Release Multi-Stage Pipeline
 
 Now that you have all the required resources created from the IaC pipeline,

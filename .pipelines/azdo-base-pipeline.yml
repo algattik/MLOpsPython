@@ -6,7 +6,7 @@ jobs:
     displayName: Generate build container
     name: SetContainer
     inputs:
-      azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
+      azureSubscription: AzureResourceConnection
       scriptLocation: inlineScript
       inlineScript: |
         set -euxo pipefail  # fail on error
