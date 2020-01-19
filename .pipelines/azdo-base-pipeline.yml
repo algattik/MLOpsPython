@@ -1,6 +1,6 @@
 jobs:
 - job: BuildEnvironment
-  displayName: "Set up build environment"
+  displayName: "Set up CI environment"
   steps:
   - task: AzureCLI@1
     displayName: Generate build container
