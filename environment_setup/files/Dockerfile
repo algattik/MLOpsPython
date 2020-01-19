@@ -4,7 +4,8 @@ RUN apt-get update
 
 RUN apt-get install -y gcc
 
-RUN conda install -c r r-essentials
+# Uncomment to run R
+# RUN conda install -c r r-essentials
 
 COPY requirements.txt  /setup/
 
