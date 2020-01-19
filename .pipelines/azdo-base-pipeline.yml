@@ -21,7 +21,6 @@ jobs:
             "$dockerDir"
         fi
         echo "##vso[task.setvariable variable=BUILD_IMAGE;isOutput=true]$imageName:$imageTag"
-      workingDirectory: azureml
 
 - job: "Model_CI_Pipeline"
   displayName: "Model CI Pipeline"
@@ -35,11 +34,21 @@ jobs:
   steps:
 
   - script: |
-     flake8 --output-file=$(Build.BinariesDirectory)/lint-testresults.xml --format junit-xml
-    workingDirectory: '$(Build.SourcesDirectory)'
-    displayName: 'Run code quality tests'
+     tox
+    displayName: 'Run tests'
 
-  - script: |
-     pytest test/unit --cov=code --cov-report=html --junitxml=$(Build.BinariesDirectory)/unit-testresults.xml  --nunitxml="*-testresults.xml"
-    workingDirectory: azureml
-    displayName: 'Run unit tests'
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFiles: '*-testresults.xml'
+      testRunTitle: 'Linting & Unit tests'
+      failTaskOnFailedTests: true
+    displayName: 'Publish linting and unit test results'
+
+  - task: PublishCodeCoverageResults@1
+    condition: succeededOrFailed()
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '**/coverage.xml'
+      reportDirectory: '**/htmlcov'
+      failIfCoverageEmpty: true
