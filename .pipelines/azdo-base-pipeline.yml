@@ -10,12 +10,14 @@ jobs:
       scriptLocation: inlineScript
       inlineScript: |
         set -euxo pipefail  # fail on error
+        $acrId=$(az resource show -g "$RESOURCE_GROUP" -n "$WORKSPACE_NAME" --resource-type Microsoft.MachineLearningServices/workspaces --query properties.containerRegistry -o tsv)
+        read -r acrName acrServer <<< $(az resource show --id "$acrId" --query '[[name,properties.loginServer]]' -o tsv)
         dockerDir=environment_setup/files
         imageTag=$(find "$dockerDir" -type f -exec md5sum {} \; | sort -k 2 | md5sum | cut -f1 -d ' ')
-        imageName="$(ACR).azurecr.io/modelbuild/$(BUILDCONTAINER_NAME)"
-        if ! az acr repository show -n $(ACR) --image "modelbuild/$(BUILDCONTAINER_NAME):$imageTag" -o table; then
+        imageName="$acrServer/modelbuild/$(BUILDCONTAINER_NAME)"
+        if ! az acr repository show -n $acrName --image "modelbuild/$(BUILDCONTAINER_NAME):$imageTag" -o table; then
           az acr build \
-            -r $(ACR) \
+            -r "$acrName" \
             -t "$imageName:$imageTag" \
             -t "$imageName:latest" \
             "$dockerDir"
