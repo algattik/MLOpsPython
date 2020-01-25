@@ -24,7 +24,7 @@ stages:
   - job: "Model_CI_Pipeline"
     displayName: "Model CI Pipeline"
     container:
-      image: acralgattik86.azurecr.io/public/mlops/python:latest
+      image: acralgattik86.azurecr.io/xxx
       endpoint: ContainerRegistry
     timeoutInMinutes: 0
     steps:
