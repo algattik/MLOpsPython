@@ -7,7 +7,9 @@ pr:
 pool:
   vmImage: 'ubuntu-latest'
 
-container: mcr.microsoft.com/mlops/python:latest  
+container:
+  image: acralgattik86.azurecr.io/public/mlops/python:latest
+  endpoint: ContainerRegistry
 
 variables:
 - template: azdo-variables.yml

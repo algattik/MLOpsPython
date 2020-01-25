@@ -23,7 +23,9 @@ stages:
   jobs:
   - job: "Model_CI_Pipeline"
     displayName: "Model CI Pipeline"
-    container: mcr.microsoft.com/mlops/python:latest
+    container:
+      image: acralgattik86.azurecr.io/public/mlops/python:latest
+      endpoint: ContainerRegistry
     timeoutInMinutes: 0
     steps:
     - template: azdo-base-pipeline.yml
