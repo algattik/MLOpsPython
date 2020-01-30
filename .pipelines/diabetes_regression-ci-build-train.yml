@@ -129,7 +129,7 @@ stages:
           # deploy to $DEPLOYMENT_TARGET if set at queue time (i.e. to value "AKS"), by default deploy to ACI
           target=${DEPLOYMENT_TARGET:-ACI}
 
-          checksum_and_name=$(sha1sum -b .dockerenv)
+          checksum_and_name=$(sha1sum -b inference_config.yml)
           read -r checksum file_name <<< $checksum_and_name
           inference_config=$(mktemp)
           cat inference_config.yml > "$inference_config"
