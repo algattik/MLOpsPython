@@ -126,6 +126,9 @@ stages:
           inference_config=$(mktemp)
           cat inference_config.yml > "$inference_config"
           echo -e "\n""environment: diabetes_scoring_$checksum" >> "$inference_config"
+          echo "==== INFERENCE CONFIG FILE ===="
+          cat $inference_config
+          echo "==============================="
 
           az ml model deploy \
             -g "$(RESOURCE_GROUP)" \
