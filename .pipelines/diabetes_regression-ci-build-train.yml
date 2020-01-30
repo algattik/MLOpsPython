@@ -24,7 +24,7 @@ stages:
   - job: "Model_CI_Pipeline"
     displayName: "Model CI Pipeline"
     container:
-      image: acralgattik86.azurecr.io/a20200130pr150
+      image: acralgattik86c.azurecr.io/a20200130pr150b
       endpoint: ContainerRegistry
     timeoutInMinutes: 0
     steps:
