@@ -25,7 +25,7 @@ stages:
     displayName: "Model CI Pipeline"
     container:
       image: acralgattik86c.azurecr.io/a20200130pr150b
-      endpoint: ContainerRegistry
+      endpoint: ContainerRegistryC
     timeoutInMinutes: 0
     steps:
     - template: azdo-base-pipeline.yml
