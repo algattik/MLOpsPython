@@ -1,8 +1,8 @@
 from azureml.pipeline.core.graph import PipelineParameter
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline
-from azureml.core import Workspace, Environment
-from azureml.core.runconfig import RunConfiguration, CondaDependencies
+from azureml.core import Workspace
+from azureml.core.runconfig import RunConfiguration
 from azureml.core import Dataset, Datastore
 import os
 import sys
