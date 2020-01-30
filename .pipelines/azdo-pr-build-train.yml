@@ -8,7 +8,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 container:
-  image: acralgattik86.azurecr.io/xxy
+  image: acralgattik86.azurecr.io/a20200130pr150
   endpoint: ContainerRegistry
 
 variables:

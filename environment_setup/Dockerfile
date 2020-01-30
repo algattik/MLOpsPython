@@ -16,7 +16,7 @@ RUN dpkg -i packages-microsoft-prod.deb
 RUN apt-get update && apt-get install -y dotnet-runtime-3.1
 
 # Packages for running R
-# RUN conda install -c r r-essentials
+RUN conda install -c r r-essentials
 
 # Install Python modules
 COPY requirements.txt  /setup/
