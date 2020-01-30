@@ -1,7 +1,7 @@
 from azureml.pipeline.core.graph import PipelineParameter
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline
-from azureml.core import Workspace
+from azureml.core import Workspace, Environment
 from azureml.core.runconfig import RunConfiguration, CondaDependencies
 from azureml.core import Dataset, Datastore
 import os
@@ -9,6 +9,7 @@ import sys
 sys.path.append(os.path.abspath("./ml_service/util"))  # NOQA: E402
 from attach_compute import get_compute
 from env_variables import Env
+from manage_environment import get_environment
 
 
 def main():
@@ -33,9 +34,10 @@ def main():
 
     # Create a reusable run configuration environment
     conda_deps_file = "diabetes_regression/training/training_dependencies.yml"
-    conda_deps = CondaDependencies(conda_deps_file)
-    run_config = RunConfiguration(conda_dependencies=conda_deps)
-    run_config.environment.docker.enabled = True
+    run_config = RunConfiguration()
+    run_config.environment = get_environment(
+        aml_workspace, "diabetes_regression", conda_deps_file)
+
     config_envvar = {}
     if (e.collection_uri is not None and e.teamproject_name is not None):
         builduri_base = e.collection_uri + e.teamproject_name
