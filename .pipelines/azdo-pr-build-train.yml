@@ -12,7 +12,7 @@ container:
   endpoint: ContainerRegistry
 
 variables:
-- template: azdo-variables.yml
+- template: diabetes_regression-variables.yml
 - group: devopsforai-aml-vg
 
 steps:
