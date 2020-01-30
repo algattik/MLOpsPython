@@ -35,8 +35,8 @@ def main():
     # Create a reusable run configuration environment
     run_config = RunConfiguration()
     run_config.environment = get_environment(
-        aml_workspace, "diabetes_regression"
-        "diabetes_regression/training/training_dependencies.yml"
+        aml_workspace, "diabetes_regression",
+        "diabetes_regression/training/training_dependencies.yml")
 
     # Prepare environment for scoring
     get_environment(
