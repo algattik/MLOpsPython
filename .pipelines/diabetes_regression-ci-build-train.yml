@@ -109,18 +109,34 @@ stages:
     timeoutInMinutes: 0
     steps:
     - template: azdo-template-get-model-version.yml
-    - task: ms-air-aiagility.vss-services-azureml.azureml-model-deploy-task.AMLModelDeploy@0
-      displayName: 'Azure ML Model Deploy'
+    - task: AzureCLI@1
+      displayName: Azure ML Model Deploy
       inputs:
         azureSubscription: $(WORKSPACE_SVC_CONNECTION)
-        modelSourceType: manualSpec
-        modelName: '$(MODEL_NAME)'
-        modelVersion: $(MODEL_VERSION)
-        inferencePath: '$(Build.SourcesDirectory)/$(SOURCES_DIR_TRAIN)/scoring/inference_config.yml'
-        deploymentTarget: ACI
-        deploymentName: $(ACI_DEPLOYMENT_NAME)
-        deployConfig: '$(Build.SourcesDirectory)/$(SOURCES_DIR_TRAIN)/scoring/deployment_config_aci.yml'
-        overwriteExistingDeployment: true
+        scriptLocation: inlineScript
+        inlineScript: |
+          set -eux  # fail on error
+          az extension add -n azure-cli-ml
+
+          # deploy to $DEPLOYMENT_TARGET if set at queue time (i.e. to value "AKS"), by default deploy to ACI
+          target=${DEPLOYMENT_TARGET:-ACI}
+
+          inference_config=$(mktemp)
+          cat inference_config.yml > "$inference_config"
+          echo -e "\n""environment: diabetes_scoring_$checksum" >> "$inference_config"
+
+          az ml model deploy \
+            -g "$(RESOURCE_GROUP)" \
+            -w "$(WORKSPACE_NAME)" \
+            -n "$(ACI_DEPLOYMENT_NAME)" \
+            --compute-target "$(AKS_COMPUTE_NAME)" \
+            --model "$(MODEL_NAME):$(MODEL_VERSION)" \
+            --inference-config-file "$inference_config" \
+            --deploy-config-file "deployment_config_aci.yml" \
+            --description "Diabetes scoring model version $(MODEL_VERSION)" \
+            --tag "BuildId=$(Build.BuildId)" \
+            --overwrite
+        workingDirectory: $(SOURCES_DIR_TRAIN)/scoring
     - task: AzureCLI@1
       displayName: 'Smoke test'
       inputs:

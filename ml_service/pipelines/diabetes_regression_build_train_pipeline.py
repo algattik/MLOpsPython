@@ -33,10 +33,15 @@ def main():
         print(aml_compute)
 
     # Create a reusable run configuration environment
-    conda_deps_file = "diabetes_regression/training/training_dependencies.yml"
     run_config = RunConfiguration()
     run_config.environment = get_environment(
-        aml_workspace, "diabetes_regression", conda_deps_file)
+        aml_workspace, "diabetes_regression"
+        "diabetes_regression/training/training_dependencies.yml"
+
+    # Prepare environment for scoring
+    get_environment(
+       aml_workspace, "diabetes_scoring",
+       "diabetes_regression/scoring/scoring_dependencies.yml")
 
     config_envvar = {}
     if (e.collection_uri is not None and e.teamproject_name is not None):
