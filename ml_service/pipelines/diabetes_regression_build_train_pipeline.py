@@ -4,12 +4,9 @@ from azureml.pipeline.core import Pipeline
 from azureml.core import Workspace
 from azureml.core.runconfig import RunConfiguration
 from azureml.core import Dataset, Datastore
-import os
-import sys
-sys.path.append(os.path.abspath("./ml_service/util"))  # NOQA: E402
-from attach_compute import get_compute
-from env_variables import Env
-from manage_environment import get_environment
+from ml_service.util.attach_compute import get_compute
+from ml_service.util.env_variables import Env
+from ml_service.util.manage_environment import get_environment
 
 
 def main():
@@ -36,12 +33,12 @@ def main():
     run_config = RunConfiguration()
     run_config.environment = get_environment(
         aml_workspace, "diabetes_regression",
-        "diabetes_regression/training/training_dependencies.yml")
+        "diabetes_regression/training_dependencies.yml")
 
     # Prepare environment for scoring
     get_environment(
        aml_workspace, "diabetes_scoring",
-       "diabetes_regression/scoring/scoring_dependencies.yml")
+       "diabetes_regression/scoring_dependencies.yml")
 
     config_envvar = {}
     if (e.collection_uri is not None and e.teamproject_name is not None):

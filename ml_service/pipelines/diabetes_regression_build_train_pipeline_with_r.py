@@ -2,11 +2,8 @@ from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline
 from azureml.core import Workspace
 from azureml.core.runconfig import RunConfiguration, CondaDependencies
-import os
-import sys
-sys.path.append(os.path.abspath("./ml_service/util"))  # NOQA: E402
-from attach_compute import get_compute
-from env_variables import Env
+from ml_service.util.attach_compute import get_compute
+from ml_service.util.env_variables import Env
 
 
 def main():
@@ -29,15 +26,11 @@ def main():
         print("aml_compute:")
         print(aml_compute)
 
-    run_config = RunConfiguration(conda_dependencies=CondaDependencies.create(
-        conda_packages=['numpy', 'pandas',
-                        'scikit-learn', 'tensorflow', 'keras'],
-        pip_packages=['azure', 'azureml-core',
-                      'azure-storage',
-                      'azure-storage-blob'])
-    )
+    # Create a run configuration environment
+    conda_deps_file = "diabetes_regression/training_dependencies.yml"
+    conda_deps = CondaDependencies(conda_deps_file)
+    run_config = RunConfiguration(conda_dependencies=conda_deps)
     run_config.environment.docker.enabled = True
-    run_config.environment.docker.base_image = "mcr.microsoft.com/mlops/python"
 
     train_step = PythonScriptStep(
         name="Train Model",
