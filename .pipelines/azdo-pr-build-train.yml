@@ -8,8 +8,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 container:
-  image: acralgattik86.azurecr.io/a20200130pr150
-  endpoint: ContainerRegistry
+  image: acralgattik86c.azurecr.io/a20200130condaicu
+  endpoint: ContainerRegistryC
 
 variables:
 - template: diabetes_regression-variables.yml
