@@ -7,6 +7,16 @@ def get_environment(
     base_name: str,
     environment_file: str,
 ):
+    """
+    Get or create an Azure ML environment definition from a Conda YAML file.
+    For DevOps scenarios, it's important to have reproducible outcomes,
+    so that environments should be automatically updated whenever the Conda
+    YAML file is modified. It's also important that the pipeline can run
+    in multiple branches in parallel without interference. To enable that,
+    this function automatically creates an environment name from a base
+    name with a checksum appended. If that environment already exists,
+    it is retrieved, otherwise it is created from the Conda file.
+    """
 
     with open(environment_file, 'rb') as file:
         checksum = hashlib.sha1(file.read()).hexdigest()
