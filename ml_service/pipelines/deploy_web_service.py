@@ -1,7 +1,7 @@
 import argparse
 import os
 from azureml.core import Workspace
-from azureml.core.webservice import AciWebservice
+from azureml.core.webservice import AciWebservice, AksWebservice
 from azureml.core.model import InferenceConfig, Model
 from ml_service.util.env_variables import Env
 from ml_service.util.manage_environment import get_environment
@@ -22,6 +22,12 @@ def main():
         type=str,
         required=True,
         help="Name of the service to deploy"
+    )
+    parser.add_argument(
+        "--compute_target",
+        type=str,
+        required=True,
+        help="Name of the compute target. Only applicable if type = AKS"
     )
     args = parser.parse_args()
 
@@ -45,27 +51,44 @@ def main():
         source_directory=os.path.join(e.sources_directory_train, "scoring"),
         environment=environment,
     )
+
+    service_description=f'Scoring model version {e.model_version}'
+
     if args.type == "AKS":
-        aci_config = AciWebservice.deploy_configuration(
-            description=f'Scoring model version {e.model_version}',
-            tags={"BuildId": e.build_id},
+
+        deployment_config = AksWebservice.deploy_configuration(
+            compute_target_name=args.compute_target,
+            description=service_description,
+            autoscale_enabled=True,
+            autoscale_min_replicas=1,
+            autoscale_max_replicas=3,
+            autoscale_refresh_seconds=10,
+            autoscale_target_utilization=70,
+            auth_enabled=True,
             cpu_cores=1,
             memory_gb=4,
+            scoring_timeout_ms=5000,
+            replica_max_concurrent_requests=2,
+            max_request_wait_time=5000,
         )
+
     else:
-        aci_config = AciWebservice.deploy_configuration(
-            description=f'Scoring model version {e.model_version}',
-            tags={"BuildId": e.build_id},
+
+        deployment_config = AciWebservice.deploy_configuration(
+            description=service_description,
             cpu_cores=1,
             memory_gb=4,
         )
+
+    deployment_config.add_tags({"BuildId": e.build_id})
+
     model = Model(aml_workspace, name=e.model_name, version=e.model_version)
     service = Model.deploy(
         workspace=aml_workspace,
         name=args.service,
         models=[model],
         inference_config=inference_config,
-        deployment_config=aci_config,
+        deployment_config=deployment_config,
         overwrite=True,
     )
     service.wait_for_deployment(show_output=True)
