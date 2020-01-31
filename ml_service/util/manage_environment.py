@@ -13,11 +13,14 @@ def get_environment(
 
     environment_name = base_name + "_" + checksum
     try:
-        return Environment.get(
+        env = Environment.get(
             workspace=workspace, name=environment_name)
+        print(f'Reusing environment {env}')
     except Exception:
-        return create_environment(
+        print(f'Creating environment {environment_name}')
+        env = create_environment(
             workspace, environment_name, environment_file)
+    return env
 
 
 def create_environment(
