@@ -83,6 +83,8 @@ def main():
     deployment_config.add_tags({"BuildId": e.build_id})
 
     model = Model(aml_workspace, name=e.model_name, version=e.model_version)
+
+    print(f'Deploying model {model} as service {args.service}')
     service = Model.deploy(
         workspace=aml_workspace,
         name=args.service,
