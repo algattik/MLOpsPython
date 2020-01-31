@@ -52,7 +52,7 @@ def main():
         environment=environment,
     )
 
-    service_description=f'Scoring model version {e.model_version}'
+    service_description = f'Scoring model version {e.model_version}'
 
     if args.type == "AKS":
 
