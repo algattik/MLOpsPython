@@ -134,8 +134,8 @@ stages:
           checksum_and_name=$(sha1sum -b inference_config.yml)
           read -r checksum file_name <<< $checksum_and_name
           inference_config=$(mktemp)
-          cat inference_config.yml > "$inference_config"
-          echo -e "\n""environment: diabetes_scoring_$checksum" >> "$inference_config"
+          echo "environment: diabetes_scoring_$checksum" > "$inference_config"
+          cat inference_config.yml >> "$inference_config"
           echo "==== INFERENCE CONFIG FILE ===="
           cat $inference_config
           echo "==============================="
