@@ -120,46 +120,14 @@ stages:
     steps:
     - template: diabetes_regression-template-get-model-version.yml
     - task: AzureCLI@1
-      displayName: Azure ML Model Deploy
-      inputs:
-        azureSubscription: $(WORKSPACE_SVC_CONNECTION)
-        scriptLocation: inlineScript
-        inlineScript: |
-          set -eux  # fail on error
-          az extension add -n azure-cli-ml
-
-          # deploy to $DEPLOYMENT_TARGET if set at queue time (i.e. to value "AKS"), by default deploy to ACI
-          target=${DEPLOYMENT_TARGET:-ACI}
-
-          checksum_and_name=$(sha1sum -b inference_config.yml)
-          read -r checksum file_name <<< $checksum_and_name
-          inference_config=$(mktemp)
-          echo "environment: diabetes_scoring_$checksum" > "$inference_config"
-          cat inference_config.yml >> "$inference_config"
-          echo "==== INFERENCE CONFIG FILE ===="
-          cat $inference_config
-          echo "==============================="
-
-          az ml model deploy \
-            -g "$(RESOURCE_GROUP)" \
-            -w "$(WORKSPACE_NAME)" \
-            -n "$(ACI_DEPLOYMENT_NAME)" \
-            --compute-target "$(AKS_COMPUTE_NAME)" \
-            --model "$(MODEL_NAME):$(MODEL_VERSION)" \
-            --inference-config-file "$inference_config" \
-            --deploy-config-file "deployment_config_aci.yml" \
-            --description "Diabetes scoring model version $(MODEL_VERSION)" \
-            --tag "BuildId=$(Build.BuildId)" \
-            --overwrite
-        workingDirectory: $(SOURCES_DIR_TRAIN)/scoring
-    - task: AzureCLI@1
-      displayName: 'Smoke test'
+      displayName: Azure ML Model Deploy and smoke test
       inputs:
         azureSubscription: '$(WORKSPACE_SVC_CONNECTION)'
         scriptLocation: inlineScript
         inlineScript: |
           set -e # fail on error
           export SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+          python -m ml_service.pipelines.deploy_web_service --type ACI --service "$(ACI_DEPLOYMENT_NAME)"
           python -m ml_service.util.smoke_test_scoring_service --type ACI --service "$(ACI_DEPLOYMENT_NAME)"
 
 - stage: 'Deploy_AKS'

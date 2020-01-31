@@ -35,11 +35,6 @@ def main():
         aml_workspace, "diabetes_regression",
         "diabetes_regression/training_dependencies.yml")
 
-    # Prepare environment for scoring
-    get_environment(
-       aml_workspace, "diabetes_scoring",
-       "diabetes_regression/scoring_dependencies.yml")
-
     config_envvar = {}
     if (e.collection_uri is not None and e.teamproject_name is not None):
         builduri_base = e.collection_uri + e.teamproject_name
