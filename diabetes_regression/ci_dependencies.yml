@@ -10,6 +10,7 @@ dependencies:
 - numpy=1.18.1
 - pandas=1.0.0
 - scikit-learn=0.22.1
+- icu
 
 - pip=20.0.2
 - pip:
