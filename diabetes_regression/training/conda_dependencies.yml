@@ -1,4 +1,4 @@
-name: diabetes_training
+name: diabetes_training_sklearn
 
 dependencies:
 
