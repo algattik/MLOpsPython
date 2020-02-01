@@ -7,7 +7,6 @@ from azureml.core.runconfig import RunConfiguration
 from azureml.core import Dataset, Datastore
 from ml_service.util.attach_compute import get_compute
 from ml_service.util.env_variables import Env
-from ml_service.util.manage_environment import get_environment
 
 
 def main():
@@ -35,11 +34,7 @@ def main():
         os.path.join(e.sources_dir_train, "training"))
     environment.register(aml_workspace)
     run_config = RunConfiguration()
-    run_config.environment = aml_env
-
-    build_uri=""
-    if (e.collection_uri is not None and e.teamproject_name is not None):
-        build_uri = e.collection_uri + e.teamproject_name + e.build_id
+    run_config.environment = environment
 
     model_name_param = PipelineParameter(
         name="model_name", default_value=e.model_name)
