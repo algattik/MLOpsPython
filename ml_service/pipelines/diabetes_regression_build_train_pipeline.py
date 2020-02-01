@@ -1,7 +1,8 @@
+import os
 from azureml.pipeline.core.graph import PipelineParameter
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline
-from azureml.core import Workspace
+from azureml.core import Workspace, Environment
 from azureml.core.runconfig import RunConfiguration
 from azureml.core import Dataset, Datastore
 from ml_service.util.attach_compute import get_compute
@@ -30,22 +31,22 @@ def main():
         print(aml_compute)
 
     # Create a reusable run configuration environment
+    environment = Environment.load_directory(
+        os.path.join(e.sources_dir_train, "training"))
+    environment.register(aml_workspace)
     run_config = RunConfiguration()
-    run_config.environment = get_environment(
-        aml_workspace, "diabetes_regression",
-        "diabetes_regression/training_dependencies.yml")
+    run_config.environment = aml_env
 
-    config_envvar = {}
+    build_uri=""
     if (e.collection_uri is not None and e.teamproject_name is not None):
-        builduri_base = e.collection_uri + e.teamproject_name
-        builduri_base = builduri_base + "/_build/results?buildId="
-        config_envvar["BUILDURI_BASE"] = builduri_base
-    run_config.environment.environment_variables = config_envvar
+        build_uri = e.collection_uri + e.teamproject_name + e.build_id
 
     model_name_param = PipelineParameter(
         name="model_name", default_value=e.model_name)
     build_id_param = PipelineParameter(
         name="build_id", default_value=e.build_id)
+    build_uri_param = PipelineParameter(
+        name="build_uri", default_value=e.build_uri)
     hyperparameter_alpha_param = PipelineParameter(
         name="hyperparameter_alpha", default_value=0.5)
 
@@ -67,6 +68,7 @@ def main():
         source_directory=e.sources_directory_train,
         arguments=[
             "--build_id", build_id_param,
+            "--build_uri", build_uri_param,
             "--model_name", model_name_param,
             "--alpha", hyperparameter_alpha_param,
             "--dataset_name", dataset_name,
@@ -83,6 +85,7 @@ def main():
         source_directory=e.sources_directory_train,
         arguments=[
             "--build_id", build_id_param,
+            "--build_uri", build_uri_param,
             "--model_name", model_name_param,
             "--allow_run_cancel", e.allow_run_cancel,
         ],
@@ -98,6 +101,7 @@ def main():
         source_directory=e.sources_directory_train,
         arguments=[
             "--build_id", build_id_param,
+            "--build_uri", build_uri_param,
             "--model_name", model_name_param,
         ],
         runconfig=run_config,
