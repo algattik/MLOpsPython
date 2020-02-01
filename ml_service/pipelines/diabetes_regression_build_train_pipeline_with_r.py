@@ -1,10 +1,9 @@
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline
-from azureml.core import Workspace
+from azureml.core import Workspace, Environment
 from azureml.core.runconfig import RunConfiguration
 from ml_service.util.attach_compute import get_compute
 from ml_service.util.env_variables import Env
-from ml_service.util.manage_environment import get_environment
 
 
 def main():
@@ -30,7 +29,6 @@ def main():
     # Create a reusable run configuration environment
     environment = Environment.load_from_directory(e.sources_directory_train)
     if (e.collection_uri is not None and e.teamproject_name is not None):
-        config_envvar = {}
         builduri_base = e.collection_uri + e.teamproject_name
         builduri_base = builduri_base + "/_build/results?buildId="
         environment.environment_variables["BUILDURI_BASE"] = builduri_base
