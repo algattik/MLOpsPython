@@ -1,5 +1,5 @@
 {
-    "name": "diabetes_regression_v1",
+    "name": "diabetes_regression_v2",
     "version": null,
     "environmentVariables": {
         "EXAMPLE_ENV_VAR": "EXAMPLE_VALUE"
@@ -11,7 +11,7 @@
         "baseCondaEnvironment": null
     },
     "docker": {
-        "enabled": false,
+        "enabled": true,
         "baseImage": "mcr.microsoft.com/azureml/base:intelmpi2018.3-ubuntu16.04",
         "baseDockerfile": null,
         "sharedVolumes": true,

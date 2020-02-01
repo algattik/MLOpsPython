@@ -1,10 +1,9 @@
 entryScript: score.py
 runtime: python
-condaFile: ../scoring_dependencies.yml
+condaFile: ../conda_dependencies.yml
 extraDockerfileSteps:
 schemaFile:
 sourceDirectory:
 enableGpu: False
 baseImage:
 baseImageRegistry:
-environment: diabetes_regression_v1
