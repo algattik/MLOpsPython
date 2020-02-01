@@ -1,5 +1,5 @@
 {
-    "name": "diabetes_regression_v2",
+    "name": "diabetes_regression_sklearn",
     "version": null,
     "environmentVariables": {
         "EXAMPLE_ENV_VAR": "EXAMPLE_VALUE"

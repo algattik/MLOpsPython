@@ -1,4 +1,4 @@
-name: diabetes_regression_v2
+name: diabetes_regression_sklearn
 
 dependencies:
 
