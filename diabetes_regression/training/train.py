@@ -57,6 +57,11 @@ def main():
         help="The build ID of the build triggering this pipeline run",
     )
     parser.add_argument(
+        "--build_uri",
+        type=str,
+        help="A URL pointing to the build triggering this pipeline run",
+    )
+    parser.add_argument(
         "--model_name",
         type=str,
         help="Name of the Model",
@@ -78,12 +83,14 @@ def main():
     args = parser.parse_args()
 
     print("Argument [build_id]: %s" % args.build_id)
+    print("Argument [build_uri]: %s" % args.build_uri)
     print("Argument [model_name]: %s" % args.model_name)
     print("Argument [alpha]: %s" % args.alpha)
     print("Argument [dataset_name]: %s" % args.dataset_name)
 
     model_name = args.model_name
     build_id = args.build_id
+    build_uri = args.build_uri
     alpha = args.alpha
     dataset_name = args.dataset_name
 
@@ -122,9 +129,7 @@ def main():
     # Add properties to identify this specific training run
     run.tag("BuildId", value=build_id)
     run.tag("run_type", value="train")
-    builduri_base = os.environ.get("BUILDURI_BASE")
-    if (builduri_base is not None):
-        build_uri = builduri_base + build_id
+    if build_uri and build_uri != "None":
         run.tag("BuildUri", value=build_uri)
         run.parent.tag("BuildUri", value=build_uri)
     print(f"tags now present for run: {run.tags}")
