@@ -74,7 +74,6 @@ stages:
 
 - stage: 'Deploy_Webapp'
   displayName: 'Deploy to Webapp'
-  dependsOn: Trigger_AML_Pipeline
   condition: and(succeeded(), variables['WEBAPP_DEPLOYMENT_NAME'])
   jobs:
   - job: "Deploy_Webapp"
