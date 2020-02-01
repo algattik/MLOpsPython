@@ -1,4 +1,3 @@
-import os
 from azureml.pipeline.core.graph import PipelineParameter
 from azureml.pipeline.steps import PythonScriptStep
 from azureml.pipeline.core import Pipeline
@@ -30,8 +29,7 @@ def main():
         print(aml_compute)
 
     # Create a reusable run configuration environment
-    environment = Environment.load_directory(
-        os.path.join(e.sources_dir_train, "training"))
+    environment = Environment.load_from_directory(e.sources_directory_train)
     environment.register(aml_workspace)
     run_config = RunConfiguration()
     run_config.environment = environment
@@ -41,7 +39,7 @@ def main():
     build_id_param = PipelineParameter(
         name="build_id", default_value=e.build_id)
     build_uri_param = PipelineParameter(
-        name="build_uri", default_value=e.build_uri)
+        name="build_uri", default_value=(e.build_uri or "None"))
     hyperparameter_alpha_param = PipelineParameter(
         name="hyperparameter_alpha", default_value=0.5)
 

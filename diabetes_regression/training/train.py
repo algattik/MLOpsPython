@@ -129,7 +129,7 @@ def main():
     # Add properties to identify this specific training run
     run.tag("BuildId", value=build_id)
     run.tag("run_type", value="train")
-    if build_uri:
+    if build_uri and build_uri != "None":
         run.tag("BuildUri", value=build_uri)
         run.parent.tag("BuildUri", value=build_uri)
     print(f"tags now present for run: {run.tags}")

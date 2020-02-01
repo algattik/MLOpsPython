@@ -48,6 +48,7 @@ class Env(Singleton):
 
         collection_uri = os.environ.get("SYSTEM_COLLECTIONURI")
         teamproject_name = os.environ.get("SYSTEM_TEAMPROJECT")
+        self._build_uri = None
         if collection_uri and teamproject_name and self._build_id:
             self._build_uri = (collection_uri
                                + teamproject_name

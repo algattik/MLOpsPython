@@ -1,5 +1,5 @@
 {
-    "name": "x",
+    "name": "diabetes_regression_v1",
     "version": null,
     "environmentVariables": {
         "EXAMPLE_ENV_VAR": "EXAMPLE_VALUE"

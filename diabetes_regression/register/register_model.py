@@ -64,6 +64,11 @@ def main():
         help="The Build ID of the build triggering this pipeline run",
     )
     parser.add_argument(
+        "--build_uri",
+        type=str,
+        help="A URL pointing to the build triggering this pipeline run",
+    )
+    parser.add_argument(
         "--run_id",
         type=str,
         help="Training run ID",
@@ -88,11 +93,10 @@ def main():
         register_aml_model(model_name, exp, run_id)
     else:
         run.tag("BuildId", value=build_id)
-        builduri_base = os.environ.get("BUILDURI_BASE")
-        if (builduri_base is not None):
-            build_uri = builduri_base + build_id
-            run.tag("BuildUri", value=build_uri)
-            register_aml_model(model_name, exp, run_id, build_id, build_uri)
+        if args.build_uri and args.build_uri != "None":
+            run.tag("BuildUri", value=args.build_uri)
+            register_aml_model(model_name, exp, run_id, build_id,
+                               args.build_uri)
         else:
             register_aml_model(model_name, exp, run_id, build_id)
 
@@ -122,7 +126,7 @@ def register_aml_model(
             tagsValue = {"area": "diabetes", "type": "regression",
                          "BuildId": build_id, "run_id": run_id,
                          "experiment_name": exp.name}
-            if (build_uri is not None):
+            if build_uri and build_uri != "None":
                 tagsValue["BuildUri"] = build_uri
         else:
             run = Run(experiment=exp, run_id=run_id)
