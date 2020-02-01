@@ -17,7 +17,7 @@ dependencies:
 #- keras
 
 
-- pip=20.0.2
+- pip=20.0.0
 - pip:
 
   # Dependencies for training environment.
