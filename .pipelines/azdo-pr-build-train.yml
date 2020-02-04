@@ -7,7 +7,9 @@ pr:
 pool:
   vmImage: 'ubuntu-latest'
 
-container: mcr.microsoft.com/mlops/python:latest  
+container:
+  image: acralgattik86.azurecr.io/a20200204
+  endpoint: ContainerRegistry
 
 variables:
 - template: diabetes_regression-variables.yml
