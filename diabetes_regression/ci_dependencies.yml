@@ -15,7 +15,7 @@ dependencies:
 - pip:
 
   # dependencies shared with other environment .yml files.
-  - azureml-sdk==1.0.79
+  - azureml-sdk==1.0.85
 
   # Additional pip dependencies for the CI environment.
   - pytest==5.3.1
